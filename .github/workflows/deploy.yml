@@ -3,7 +3,6 @@ on:
   push:
     branches:
       - main
-
 env:
   CACHE_KEY: node-deps
   MONGODB_DB_NAME: gha-demo
@@ -11,6 +10,8 @@ jobs:
   test:
     environment: testing
     runs-on: ubuntu-latest
+    container:
+      image: node:18
     env:
       MONGODB_CONNECTION_PROTOCOL: mongodb+srv
       MONGODB_CLUSTER_ADDRESS: cluster0.ntrwp.mongodb.net
@@ -34,9 +35,12 @@ jobs:
       - name: Output information
         run: |
           echo "MONGODB_USERNAME: $MONGODB_USERNAME"
+          
   deploy:
     needs: test
     runs-on: ubuntu-latest
+    container:
+      image: node:18
     steps:
       - name: Output information
         env:
